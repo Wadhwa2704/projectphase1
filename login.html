@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            width: 100%;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            left: 0;
+        }
+
+        .header-login {
+            background-color: #007bff; 
+            top: 0;
+        }
+
+        .footer-login {
+            background-color: #0056b3; 
+            bottom: 0;
+        }
+
+        .container {
+            width: 400px;
+            margin: 100px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #666;
+            text-align: center;
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .login-options div {
+            margin-right: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #0056b3; 
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #004080; 
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"] + label {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        input[type="radio"]:checked + label {
+            background-color: #0056b3; 
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header-login">
+    <h1>Login Page</h1>
+</header>
+
+<div class="container">
+    <h2>Welcome to the System!</h2>
+    <p>Are you logging in as an owner or a coworker?</p>
+    <div class="login-options">
+        <div>
+            <input type="radio" id="ownerRadio" name="loginType" value="owner">
+            <label for="ownerRadio">Owner</label>
+        </div>
+        <div>
+            <input type="radio" id="coworkerRadio" name="loginType" value="coworker">
+            <label for="coworkerRadio">Coworker</label>
+        </div>
+    </div>
+    <button id="loginBtn">Login</button>
+</div>
+
+<footer class="footer-login">
+    <p>&copy; 2024 Company. All rights reserved.</p>
+</footer>
+
+<script>
+    document.getElementById("loginBtn").addEventListener("click", function(event) {
+        event.preventDefault(); 
+
+        var loginType = document.querySelector('input[name="loginType"]:checked');
+        if (loginType) {
+            if (loginType.value === "owner") {
+                console.log("Owner login selected.");
+                window.location.href = "owner.html"; 
+                document.querySelector('.header-login').style.backgroundColor = '#007bff'; 
+                document.querySelector('.footer-login').style.backgroundColor = '#0056b3'; 
+            } else if (loginType.value === "coworker") {
+                console.log("Coworker login selected.");
+                window.location.href = "coworker.html"; l
+            }
+        } else {
+            alert("Please select a login type.");
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page for Owner</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 300px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 12px);
+            padding: 6px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        #editWorkerButton {
+            background-color: #008CBA;
+        }
+
+        #editWorkerButton:hover {
+            background-color: #0077A3;
+        }
+
+        #logoutButton {
+            background-color: #f44336;
+        }
+
+        #logoutButton:hover {
+            background-color: #d32f2f;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginSection" class="container">
+        <h2>Login for Owner</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+
+    <div id="userInfoSection" class="container" style="display: none;">
+        <h2>Owner Information</h2>
+        <p><strong>Username:</strong> <span id="userInfoUsername"></span></p>
+        <p><strong>Salary:</strong> <span id="userInfoSalary"></span></p>
+        <p><strong>Work Period:</strong> <span id="userInfoWorkPeriod"></span></p>
+        <p><strong>Schedule:</strong> <span id="userInfoSchedule"></span></p>
+        <button id="editWorkerButton" class="btn">Edit Worker Details</button>
+        <button id="viewUserListButton" class="btn">View User List</button>
+        <button id="logoutButton" class="btn">Logout</button>
+    </div>
+
+    <div id="editWorkerSection" class="container" style="display: none;">
+        <h2>Edit Worker Details</h2>
+        <form id="editWorkerForm">
+            <label for="workerSalary">Salary:</label>
+            <input type="text" id="workerSalary" name="workerSalary" required><br>
+            <label for="workerWorkPeriod">Work Period:</label>
+            <input type="text" id="workerWorkPeriod" name="workerWorkPeriod" required><br>
+            <label for="workerSchedule">Schedule:</label>
+            <input type="text" id="workerSchedule" name="workerSchedule" required><br>
+            <button type="submit" class="btn">Save Changes</button>
+        </form>
+    </div>
+
+    <div id="userListSection" class="container" style="display: none;">
+        <h2>User List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Salary</th>
+                    <th>Work Period</th>
+                    <th>Schedule</th>
+                </tr>
+            </thead>
+            <tbody id="userListBody">
+               
+            </tbody>
+        </table>
+        <button id="backToOwnerButton" class="btn">Back to Owner Page</button>
+    </div>
+
+    <script>
+        
+        const ownerCredentials = {
+            username: 'owner',
+            password: 'owner'
+        };
+
+        let workerDetails = {
+            username: 'worker',
+            salary: '$50000',
+            workPeriod: 'Full-time',
+            schedule: 'Monday-Friday'
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            
+            if (username === ownerCredentials.username && password === ownerCredentials.password) {
+  
+                document.getElementById('loginSection').style.display = 'none';
+                
+                document.getElementById('userInfoSection').style.display = 'block';
+                
+                displayOwnerInfo();
+            } else {
+                alert('Invalid username or password.');
+            }
+        });
+
+        function displayOwnerInfo() {
+            document.getElementById('userInfoUsername').textContent = ownerCredentials.username;      
+                document.getElementById('userInfoWorkPeriod').textContent = 'Full-time'; 
+                document.getElementById('userInfoSchedule').textContent = 'Flexible'; 
+            }
+
+      
+            document.getElementById('viewUserListButton').addEventListener('click', function() {
+             
+                document.getElementById('userInfoSection').style.display = 'none';
+              
+                document.getElementById('userListSection').style.display = 'block';
+               
+                displayUserList();
+            });
+
+         
+            document.getElementById('backToOwnerButton').addEventListener('click', function() {
+                
+                document.getElementById('userListSection').style.display = 'none';
+             
+                document.getElementById('userInfoSection').style.display = 'block';
+            });
+
+         
+            function displayUserList() {
+                const userListBody = document.getElementById('userListBody');
+                userListBody.innerHTML = '';
+
+                
+                users.forEach(function(user) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.username}</td>
+                        <td>${user.salary}</td>
+                        <td>${user.workPeriod}</td>
+                        <td>${user.schedule}</td>
+                    `;
+                    userListBody.appendChild(row);
+                });
+            }
+
+           
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                
+                document.getElementById('loginSection').style.display = 'block';
+                
+                document.getElementById('userInfoSection').style.display = 'none';
+                document.getElementById('editWorkerSection').style.display = 'none';
+                document.getElementById('userListSection').style.display = 'none';
+               
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            });
+        </script>
+    </body>
+</html>
+

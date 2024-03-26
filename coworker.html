@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            left: 0;
+        }
+
+        header {
+            top: 0;
+        }
+
+        footer {
+            bottom: 0;
+        }
+
+        .container {
+            width: 400px;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px; /* Adjusted margin to make space for header */
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #666;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #userInfoSection p {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        #logoutButton {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to our System!</h1>
+    </header>
+
+    <div id="loginSection" class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+            <button type="submit" class="btn">Login</button>
+            <p>Don't have an account? <button type="button" id="goToSignup" class="btn">Sign Up</button></p>
+        </form>
+    </div>
+
+    <div id="signupSection" class="container hidden">
+        <h2>Sign Up</h2>
+        <form id="signupForm">
+            <label for="newUsername">Username:</label>
+            <input type="text" id="newUsername" name="newUsername" required><br>
+            <label for="newPassword">Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required><br>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required><br>
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+    </div>
+
+    <div id="userInfoSection" class="container hidden">
+        <h2>User Information</h2>
+        <p><strong>Username:</strong> <span id="userInfoUsername"></span></p>
+        <p><strong>Salary:</strong> <span id="userInfoSalary"></span></p>
+        <p><strong>Work Period:</strong> <span id="userInfoWorkPeriod"></span></p>
+        <p><strong>Schedule:</strong> <span id="userInfoSchedule"></span></p>
+        <p><strong>Next Payday:</strong> <span id="nextPayday"></span></p>
+        <button id="logoutButton" class="btn">Logout</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Company. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let users = [];
+
+        document.getElementById('goToSignup').addEventListener('click', function () {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('signupSection').classList.remove('hidden');
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function (event) {
+            event.preventDefault(); 
+
+            const newUsername = document.getElementById('newUsername').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert("Passwords don't match. Please try again.");
+                return;
+            }
+
+            const existingUser = users.find(user => user.username === newUsername);
+
+            if (existingUser) {
+                alert('Username already exists. Please choose a different username.');
+            } else {
+                const newUser = {
+                    username: newUsername,
+                    password: newPassword,
+                    salary: getRandomSalary(),
+                    workPeriod: getRandomWorkPeriod(),
+                    schedule: getRandomSchedule(),
+                    nextPayday: getNextPayday()
+                };
+                users.push(newUser);
+                alert('Sign up successful! Please log in.');
+
+                document.getElementById('newUsername').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+
+                document.getElementById('signupSection').classList.add('hidden');
+                document.getElementById('loginSection').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault(); 
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const user = users.find(user => user.username === username && user.password === password);
+
+            if (user) {
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('userInfoSection').classList.remove('hidden');
+                displayUserInfo(user);
+            } else {
+                alert('Invalid username or password.');
+            }
+        });
+
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('userInfoSection').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        });
+
+      
+
+      
+        function displayUserInfo(user) {
+            document.getElementById('userInfoUsername').textContent = user.username;
+            document.getElementById('userInfoSalary').textContent = user.salary;
+            document.getElementById('userInfoWorkPeriod').textContent = user.workPeriod;
+            document.getElementById('userInfoSchedule').textContent = user.schedule;
+            document.getElementById('nextPayday').textContent = user.nextPayday;
+        }
+
+        function getRandomSalary() {
+            const minSalary = 50000;
+            const maxSalary = 150000;
+            return '$' + Math.floor(Math.random() * (maxSalary - minSalary + 1)) + minSalary;
+        }
+
+        function getRandomWorkPeriod() {
+            const workPeriods = ['Full-time', 'Part-time', 'Contract'];
+            return workPeriods[Math.floor(Math.random() * workPeriods.length)];
+        }
+
+        function getRandomSchedule() {
+            const schedules = ['Monday-Friday (9:00 AM - 5:00 PM)', 'Weekends (10:00 AM - 6:00 PM)', 'Flexible (Varies)'];
+            return schedules[Math.floor(Math.random() * schedules.length)];
+        }
+
+        function getNextPayday() {
+            const today = new Date();
+            const daysUntilFriday = 5 - today.getDay();
+            const nextFriday = new Date(today.getTime() + daysUntilFriday * 24 * 60 * 60 * 1000);
+            const payday = new Date(nextFriday.getTime() + 7 * 24 * 60 * 60 * 1000);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return payday.toLocaleDateString('en-US', options);
+        }
+    </script>
+</body>
+</html>
+
